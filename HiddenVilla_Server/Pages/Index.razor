@@ -12,16 +12,34 @@ Price: @blazorRoom.Price
 <br />
 
 <input type="number" @bind-value="blazorRoom.Price" @bind-value:event="oninput"/><br />
-<input type="checkbox" @bind-value="blazorRoom.IsActive" checked="@(blazorRoom.IsActive ? "checked" : null)" />
+<input type="checkbox" @bind-value="blazorRoom.IsActive" checked="@(blazorRoom.IsActive ? "checked" : null)" /><br />
+
+<select @bind="selectedRoomProp">
+    @foreach (var prop in blazorRoom.RoomProps)
+    {
+        <option value="@prop.Name">@prop.Name</option>
+    }
+</select>
+<span>The Room Property selected is: @selectedRoomProp</span>
+<div>@blazorRoom.RoomProps.FirstOrDefault(p => p.Name == selectedRoomProp).Value</div>
 
 
 @code {
-    Model.BlazorRoom blazorRoom = new Model.BlazorRoom()
+
+
+    static Model.BlazorRoom blazorRoom = new Model.BlazorRoom
     {
         Id = 1,
         RoomName = "Villa Suite",
         IsActive = true,
-        Price = 499
+        Price = 499,
+        RoomProps = new List<Model.BlazorRoomProp>
+        {
+            new Model.BlazorRoomProp {Id = 1, Name = "Sq Feet", Value = "100"},
+            new Model.BlazorRoomProp {Id = 2, Name = "Occupancy", Value = "3"}
+        }
     };
+
+    string selectedRoomProp = blazorRoom.RoomProps.FirstOrDefault().Name;
 }
 
