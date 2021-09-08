@@ -5,8 +5,6 @@ using Microsoft.EntityFrameworkCore;
 using Models;
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 
 namespace Business.Repository
@@ -40,13 +38,13 @@ namespace Business.Repository
             return await _db.SaveChangesAsync();
         }
 
-        public async Task<List<HotelRoomDto>> GetAllHotelRooms()
+        public async Task<IEnumerable<HotelRoomDto>> GetAllHotelRooms()
         {
             try
             {
-                var hotelRoomDTOs =
+                var hotelRoomDtoList =
                     _mapper.Map<IEnumerable<HotelRoom>, IEnumerable<HotelRoomDto>>(await _db.HotelRooms.ToListAsync());
-                return (List<HotelRoomDto>)hotelRoomDTOs;
+                return hotelRoomDtoList;
             }
             catch { return null; }
         }
@@ -72,14 +70,14 @@ namespace Business.Repository
             catch { return null; }
         }
 
-        public async Task<HotelRoomDto> UpdateHotelRoom(int roomId, HotelRoomDto hotelRoomDTO)
+        public async Task<HotelRoomDto> UpdateHotelRoom(int roomId, HotelRoomDto hotelRoomDto)
         {
             try
             {
-                if (roomId == hotelRoomDTO.Id)
+                if (roomId == hotelRoomDto.Id)
                 {
                     var roomDetails = await _db.HotelRooms.FindAsync(roomId);
-                    var room = _mapper.Map<HotelRoomDto, HotelRoom>(hotelRoomDTO, roomDetails);
+                    var room = _mapper.Map(hotelRoomDto, roomDetails);
                     room.UpdatedTime = DateTime.Now;
                     room.UpdatedBy = "";
                     var updatedRoom = _db.HotelRooms.Update(room);

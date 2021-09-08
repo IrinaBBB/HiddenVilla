@@ -1,0 +1,64 @@
+﻿@page "/blazorjs"
+@using HiddenVilla_Server.Helper
+@inject IJSRuntime _jsRuntime
+
+<h3>BlazorJs</h3>
+<div class="row">
+    <button class="btn btn-secondary" @onclick="(() => TestConfirmBox(_confirmMessage))">
+        Test Confirm Button
+    </button>
+    <button class="btn btn-info" @onclick="TestSuccess">
+        Test Confirm Button
+    </button>
+    <button class="btn btn-danger" @onclick="TestFailure">
+        Test Confirm Button
+    </button>
+    <br />
+    <button class="btn btn-info" @onclick="TestSuccessSweetAlert">
+        Sweet Alert Success 
+    </button>
+    <button class="btn btn-danger" @onclick="TestFailureSweetAlert">
+        Sweet Alert Failure
+    </button>
+</div>
+
+<div class="row">
+    @if (Confirm)
+    {
+        <p>Confirmation has been made!</p>
+    }
+    else
+    {
+        <p>Confirmation Pending!</p>
+    }
+</div>
+
+@code {
+    private readonly string _confirmMessage = "Are you sure you want to click?";
+    private bool Confirm { get; set; }
+
+    private async Task TestConfirmBox(string message)
+    {
+        Confirm = await _jsRuntime.InvokeAsync<bool>("confirm", _confirmMessage);
+    }
+
+    private async Task TestSuccess()
+    {
+        await _jsRuntime.ToastrSuccess("Success M");
+    }
+
+    private async Task TestFailure()
+    {
+        await _jsRuntime.ToastrError("Error M");
+    }
+
+    private async Task TestSuccessSweetAlert()
+    {
+        await _jsRuntime.InvokeVoidAsync("showSwal", "success", "Error M");
+    }
+
+    private async Task TestFailureSweetAlert()
+    {
+        await _jsRuntime.InvokeVoidAsync("showSwal", "error", "Error M");
+    }
+}

@@ -16,17 +16,20 @@
             <NavLink class="nav-link" href="hotel-room">
                 <span class="oi oi-list" aria-hidden="true"></span> Hotel Rooms
             </NavLink>
+            <NavLink class="nav-link" href="blazorjs">
+                <span class="oi oi-book" aria-hidden="true"></span> Learn Js 
+            </NavLink>
         </li>
     </ul>
 </div>
 
 @code {
-    private bool collapseNavMenu = true;
+    private bool _collapseNavMenu = true;
 
-    private string NavMenuCssClass => collapseNavMenu ? "collapse" : null;
+    private string NavMenuCssClass => _collapseNavMenu ? "collapse" : null;
 
     private void ToggleNavMenu()
     {
-        collapseNavMenu = !collapseNavMenu;
+        _collapseNavMenu = !_collapseNavMenu;
     }
 }
